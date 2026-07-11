@@ -7,6 +7,8 @@ export interface WorkItem {
   category: string;
   description: string;
   palette: [string, string, string];
+  image?: string;
+  imageAlt?: string;
 }
 
 export interface VlogItem {
@@ -16,6 +18,7 @@ export interface VlogItem {
   duration: string;
   note: string;
   bvid?: string;
+  bilibiliUrl?: string;
   accent: string;
 }
 
@@ -25,4 +28,3 @@ export interface MenuItem {
   note: string;
   object: "book" | "camera" | "journal" | "phone";
 }
-

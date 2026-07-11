@@ -21,5 +21,7 @@ test("server-renders the interactive portfolio shell", async () => {
   assert.match(html, /花·生 &amp; 影子/);
   assert.match(html, /CLICK TO TAKE SOME TIME/);
   assert.match(html, /<title>TAKE SOME TIME TO LIVE \| 花·生 &amp; 影子<\/title>/i);
+  assert.match(html, /property="og:image"/i);
+  assert.match(html, /og\.png/i);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Starter Project/i);
 });
