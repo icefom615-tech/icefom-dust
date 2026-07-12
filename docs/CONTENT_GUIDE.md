@@ -37,7 +37,21 @@
 }
 ```
 
+如果视频文件在本地，把文件放入 `public/videos/`，再填写：
+
+```ts
+{
+  id: "vlog-05",
+  title: "本地视频标题",
+  date: "JUL 2026",
+  duration: "03:20",
+  note: "视频简介",
+  videoSrc: "/videos/your-video.mp4",
+  poster: "/videos/your-cover.jpg",
+  accent: "#f4b43f",
+}
+```
+
 ## 联系信息
 
 在 `contacts` 中替换显示文字和链接。暂时不想公开的平台可以保留 `href: "#"`；网站不会收集访客资料。
-

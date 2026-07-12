@@ -7,6 +7,6 @@ test("content configuration contains every agreed section", async () => {
   for (const section of ["works", "vlog", "about", "contact"]) {
     assert.match(source, new RegExp(`id: \\"${section}\\"`));
   }
-  assert.match(source, /花·生 & 影子/);
-  assert.match(source, /bvid/);
+  assert.match(source, /花·生 & 尘光/);
+  assert.match(source, /bilibiliUrl/);
 });

@@ -19,6 +19,8 @@ export interface VlogItem {
   note: string;
   bvid?: string;
   bilibiliUrl?: string;
+  videoSrc?: string;
+  poster?: string;
   accent: string;
 }
 
