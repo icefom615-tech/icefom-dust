@@ -187,7 +187,7 @@ function IntroCinema({ onDone }: { onDone: () => void }) {
         ))}
       </div>
       <div className="intro-title intro-scene scene-symbol" aria-hidden="true">
-        <img className="intro-hanzi intro-calligraphy" src="/images/chen-calligraphy.png" alt="一尘" />
+        <img className="intro-hanzi intro-calligraphy" src="./images/chen-calligraphy.png" alt="一尘" />
         <span className="intro-roman">chen</span>
       </div>
       <div className="intro-scene scene-question" aria-hidden="true">
@@ -214,7 +214,7 @@ function IntroCinema({ onDone }: { onDone: () => void }) {
         <video
           ref={flowerTreeRef}
           className="flower-tree-video"
-          src="/videos/flower-tree.mp4"
+          src="./videos/flower-tree.mp4"
           muted
           loop
           playsInline
