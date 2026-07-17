@@ -23,6 +23,14 @@ function resolveBvid(bvid?: string, url?: string) {
   return url?.match(/BV[a-zA-Z0-9]+/)?.[0] ?? "";
 }
 
+function tryPlayMuted(video: HTMLVideoElement) {
+  video.muted = true;
+  void video.play().catch(() => {
+    // Browsers may defer autoplay while the network is still buffering.
+    // The ready-state listeners and the final-scene timer retry it below.
+  });
+}
+
 function MenuObject({ item, onSelect }: { item: MenuItem; onSelect: (id: PanelId) => void }) {
   return (
     <div className={`hanger hanger-${item.id}`} data-menu-item={item.id}>
@@ -156,14 +164,29 @@ function IntroCinema({ onDone }: { onDone: () => void }) {
   const starDots = Array.from({ length: 22 }, (_, index) => index);
 
   useEffect(() => {
+    const video = flowerTreeRef.current;
+    if (!video) return;
+
+    // Start loading immediately. On slower external networks the old one-shot
+    // timer could fire before metadata arrived, leaving the video permanently paused.
+    const retryPlay = () => tryPlayMuted(video);
+    video.addEventListener("loadedmetadata", retryPlay);
+    video.addEventListener("loadeddata", retryPlay);
+    video.addEventListener("canplay", retryPlay);
+    video.load();
+    retryPlay();
+
     // Start the supplied effect as the final black scene fades in (30s into the shortened intro).
     const timer = window.setTimeout(() => {
-      const video = flowerTreeRef.current;
-      if (!video) return;
       video.currentTime = 0;
-      void video.play().catch(() => undefined);
+      tryPlayMuted(video);
     }, 30000);
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+      video.removeEventListener("loadedmetadata", retryPlay);
+      video.removeEventListener("loadeddata", retryPlay);
+      video.removeEventListener("canplay", retryPlay);
+    };
   }, []);
 
   return (
@@ -216,6 +239,7 @@ function IntroCinema({ onDone }: { onDone: () => void }) {
           className="flower-tree-video"
           src="./videos/flower-tree.mp4"
           muted
+          autoPlay
           loop
           playsInline
           preload="auto"
