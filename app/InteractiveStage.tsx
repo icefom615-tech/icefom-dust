@@ -187,7 +187,7 @@ function IntroCinema({ onDone }: { onDone: () => void }) {
         ))}
       </div>
       <div className="intro-title intro-scene scene-symbol" aria-hidden="true">
-        <span className="intro-hanzi">尘</span>
+        <img className="intro-hanzi intro-calligraphy" src="/images/chen-calligraphy.png" alt="一尘" />
         <span className="intro-roman">chen</span>
       </div>
       <div className="intro-scene scene-question" aria-hidden="true">

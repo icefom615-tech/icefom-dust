@@ -1,5 +1,25 @@
 @import "tailwindcss";
 
+/* Keep the Chinese display typeface identical on desktop and mobile. */
+@font-face {
+  font-family: "Source Han Serif SC";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200;
+  src: url("/fonts/source-han-serif-sc-extralight-cjk.woff2") format("woff2");
+  unicode-range: U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF;
+}
+@font-face {
+  font-family: "Source Han Serif SC";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200;
+  src: url("/fonts/source-han-serif-sc-extralight-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   --ink: #171b1b;
   --paper: #fbfaf4;
@@ -41,7 +61,8 @@ button:focus-visible, a:focus-visible { outline: 4px solid #162929; outline-offs
 .intro-title { position: relative; z-index: 2; display: grid; justify-items: center; color: #050505; text-align: center; }
 .intro-title::before, .intro-title::after { content: ""; position: absolute; top: 50%; width: 82px; height: 1px; background: #101010; opacity: 0; animation: introLine .9s ease-out 1.15s forwards; }
 .intro-title::before { right: calc(100% + 28px); transform-origin: right center; }.intro-title::after { left: calc(100% + 28px); transform-origin: left center; }
-.intro-hanzi { font-family: var(--serif-cn); font-size: clamp(106px, 14vw, 190px); line-height: .88; font-weight: 500; letter-spacing: 0; opacity: 0; transform: scale(.72) translateY(20px); filter: blur(8px); animation: dustTitleIn 1.2s cubic-bezier(.16,1,.3,1) .58s forwards, dustTitleBreathe 1.7s ease-in-out 1.85s infinite alternate; }
+.intro-hanzi { font-family: var(--serif-cn); font-size: clamp(106px, 14vw, 190px); line-height: .88; font-weight: 200; letter-spacing: 0; opacity: 0; transform: scale(.72) translateY(20px); filter: blur(8px); animation: dustTitleIn 1.2s cubic-bezier(.16,1,.3,1) .58s forwards, dustTitleBreathe 1.7s ease-in-out 1.85s infinite alternate; }
+.intro-calligraphy { display: block; width: min(19vw, 230px); height: auto; object-fit: contain; }
 .intro-roman { margin-top: 24px; font-family: var(--font-display); font-size: clamp(22px, 3vw, 44px); letter-spacing: .34em; text-transform: lowercase; opacity: 0; transform: translateY(22px); animation: chenIn .85s cubic-bezier(.16,1,.3,1) 1.42s forwards; }
 .intro-finish { position: absolute; width: 1px; height: 1px; pointer-events: none; animation: introDone 4.42s linear forwards; }
 
@@ -50,7 +71,7 @@ button:focus-visible, a:focus-visible { outline: 4px solid #162929; outline-offs
 .intro-cinema::before { opacity: .16; animation: introPaperPulse var(--intro-total) ease-in-out both; }
 .intro-inkfield { animation: inkFieldShift var(--intro-total) linear both; }
 .ink-dot { opacity: 0; animation: inkLongFloat var(--intro-total) cubic-bezier(.2,.9,.2,1) var(--d) both; }
-.intro-scene { position: absolute; z-index: 2; inset: 0; display: grid; place-items: center; color: #050505; text-align: center; opacity: 0; pointer-events: none; font-family: var(--serif-cn); font-weight: 500; }
+.intro-scene { position: absolute; z-index: 2; inset: 0; display: grid; place-items: center; color: #050505; text-align: center; opacity: 0; pointer-events: none; font-family: var(--serif-cn); font-weight: 200; }
 .scene-symbol { animation: sceneSymbol var(--intro-total) linear both; }
 .scene-question { align-content: center; gap: 18px; animation: sceneQuestion var(--intro-total) linear both; }.scene-question b { font-family: var(--serif-cn); font-weight: 500; font-size: clamp(54px, 7vw, 100px); }.scene-question span { font-size: clamp(15px, 1.4vw, 22px); letter-spacing: .18em; }.scene-question small { font-size: clamp(14px, 1.6vw, 24px); letter-spacing: .16em; }
 .scene-strokes { animation: sceneStrokes var(--intro-total) linear both; }.scene-strokes i { position: absolute; width: 12vw; max-width: 180px; height: 10px; background: #050505; transform-origin: 50% 50%; }.scene-strokes i:nth-child(1) { left: 18%; top: 56%; transform: rotate(18deg); }.scene-strokes i:nth-child(2) { left: 25%; top: 48%; transform: rotate(-32deg); }.scene-strokes i:nth-child(3) { right: 22%; top: 42%; transform: rotate(68deg); }.scene-strokes i:nth-child(4) { right: 18%; bottom: 28%; transform: rotate(-48deg); }.scene-strokes b { font-family: var(--serif-cn); font-weight: 500; font-size: clamp(38px, 5vw, 82px); }.scene-strokes small { position: absolute; right: 25%; top: 41%; font-size: clamp(13px, 1.2vw, 18px); letter-spacing: .2em; }
@@ -67,6 +88,10 @@ button:focus-visible, a:focus-visible { outline: 4px solid #162929; outline-offs
 .intro-hanzi { animation: dustTitleLong var(--intro-total) linear both; }
 .intro-roman { animation: chenLong var(--intro-total) linear both; }
 .intro-finish { animation: introDone 43.568s linear forwards; }
+.intro-cinema .intro-hanzi,
+.intro-cinema .intro-scene,
+.intro-cinema .intro-scene b,
+.intro-cinema .intro-scene em { font-weight: 200; }
 
 .stage { position: relative; width: min(1180px, 100vw); height: min(820px, 100svh); min-height: 680px; overflow: hidden; background: var(--mist); box-shadow: 0 0 0 1px #79918a33, 0 25px 70px #435a5548; isolation: isolate; }
 .is-closed .stage { visibility: hidden; }
@@ -195,6 +220,7 @@ button:focus-visible, a:focus-visible { outline: 4px solid #162929; outline-offs
   .intro-title::before, .intro-title::after { width: 42px; }
   .intro-title::before { right: calc(100% + 14px); }.intro-title::after { left: calc(100% + 14px); }
   .intro-hanzi { font-size: clamp(86px, 28vw, 128px); }
+  .intro-calligraphy { width: min(48vw, 210px); }
   .intro-roman { font-size: clamp(18px, 7vw, 30px); letter-spacing: .22em; }
   .scene-question, .scene-world { padding: 0 22px; gap: 14px; }
   .scene-question b, .scene-world b, .scene-dark b, .scene-minimal b, .scene-geometry b { font-size: clamp(42px, 17vw, 72px); }
