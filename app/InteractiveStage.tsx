@@ -136,6 +136,7 @@ function ActivePanel({ id }: { id: PanelId }) {
 }
 
 function IntroCinema({ onDone }: { onDone: () => void }) {
+  const flowerTreeRef = useRef<HTMLVideoElement>(null);
   const dots = [
     ["7%", "11%", 9, "0s"],
     ["13%", "6%", 16, "-.4s"],
@@ -153,6 +154,17 @@ function IntroCinema({ onDone }: { onDone: () => void }) {
     ["92%", "65%", 14, "-.5s"],
   ] as const;
   const starDots = Array.from({ length: 22 }, (_, index) => index);
+
+  useEffect(() => {
+    // Start the supplied effect as the final black scene fades in (30s into the shortened intro).
+    const timer = window.setTimeout(() => {
+      const video = flowerTreeRef.current;
+      if (!video) return;
+      video.currentTime = 0;
+      void video.play().catch(() => undefined);
+    }, 30000);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   return (
     <section
@@ -198,7 +210,19 @@ function IntroCinema({ onDone }: { onDone: () => void }) {
         <span className="geo-circle" /><span className="geo-bar bar-a" /><span className="geo-bar bar-b" />
         <b>尘</b><small>万物皆微尘，自在。</small>
       </div>
-      <div className="intro-scene scene-end" aria-hidden="true"><b>chen</b><span>take some time to live</span></div>
+      <div className="intro-scene scene-end" aria-hidden="true">
+        <video
+          ref={flowerTreeRef}
+          className="flower-tree-video"
+          src="/videos/flower-tree.mp4"
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
+        <div className="scene-end-signature"><b>chen</b><span>take some time to live</span></div>
+      </div>
       <span className="intro-finish" onAnimationEnd={onDone} aria-hidden="true" />
     </section>
   );
