@@ -167,21 +167,27 @@ function IntroCinema({ onDone }: { onDone: () => void }) {
     const video = flowerTreeRef.current;
     if (!video) return;
 
-    // Start loading immediately. On slower external networks the old one-shot
-    // timer could fire before metadata arrived, leaving the video permanently paused.
+    // Warm the short effect shortly before its scene appears instead of downloading
+    // it while the first 30 seconds of the intro are still playing.
     const retryPlay = () => tryPlayMuted(video);
+    const loadVideo = () => {
+      video.preload = "auto";
+      video.load();
+      retryPlay();
+    };
     video.addEventListener("loadedmetadata", retryPlay);
     video.addEventListener("loadeddata", retryPlay);
     video.addEventListener("canplay", retryPlay);
-    video.load();
-    retryPlay();
+    const warmupTimer = window.setTimeout(loadVideo, 24000);
 
     // Start the supplied effect as the final black scene fades in (30s into the shortened intro).
     const timer = window.setTimeout(() => {
+      loadVideo();
       video.currentTime = 0;
       tryPlayMuted(video);
     }, 30000);
     return () => {
+      window.clearTimeout(warmupTimer);
       window.clearTimeout(timer);
       video.removeEventListener("loadedmetadata", retryPlay);
       video.removeEventListener("loadeddata", retryPlay);
@@ -242,7 +248,7 @@ function IntroCinema({ onDone }: { onDone: () => void }) {
           autoPlay
           loop
           playsInline
-          preload="auto"
+          preload="none"
           aria-hidden="true"
         />
         <div className="scene-end-signature"><b>chen</b><span>take some time to live</span></div>
