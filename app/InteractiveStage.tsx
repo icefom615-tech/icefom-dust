@@ -257,6 +257,7 @@ export function InteractiveStage() {
   const panelRef = useRef<HTMLElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const audioRef = useRef<AudioContext | null>(null);
+  const introAudioRef = useRef<HTMLAudioElement | null>(null);
   const introDoneRef = useRef(false);
   const [started, setStarted] = useState(false);
   const [introPlaying, setIntroPlaying] = useState(false);
@@ -281,6 +282,12 @@ export function InteractiveStage() {
       audioRef.current = null;
       if (audio && audio.state !== "closed") {
         void audio.close().catch(() => undefined);
+      }
+      const introAudio = introAudioRef.current;
+      if (introAudio) {
+        introAudio.pause();
+        introAudio.currentTime = 0;
+        introAudioRef.current = null;
       }
     };
   }, []);
@@ -329,6 +336,12 @@ export function InteractiveStage() {
   const finishIntro = () => {
     if (introDoneRef.current) return;
     introDoneRef.current = true;
+    const introAudio = introAudioRef.current;
+    if (introAudio) {
+      introAudio.pause();
+      introAudio.currentTime = 0;
+      introAudioRef.current = null;
+    }
     sessionStorage.setItem("take-some-time-entered", "yes");
     if (new URLSearchParams(window.location.search).get("intro") === "1") {
       window.history.replaceState(null, "", window.location.pathname);
@@ -346,6 +359,13 @@ export function InteractiveStage() {
       setStarted(true);
       return;
     }
+    // Start the extracted audio in the same click gesture that launches the intro,
+    // which keeps sound playback compatible with mobile autoplay policies.
+    const introAudio = new Audio("./audio/intro-sound.m4a");
+    introAudio.preload = "auto";
+    introAudio.volume = .9;
+    introAudioRef.current = introAudio;
+    void introAudio.play().catch(() => undefined);
     setIntroPlaying(true);
   };
 
