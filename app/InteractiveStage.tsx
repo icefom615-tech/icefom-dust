@@ -237,7 +237,7 @@ function IntroCinema({ onDone }: { onDone: () => void }) {
       </div>
       <div className="intro-scene scene-geometry" aria-hidden="true">
         <span className="geo-circle" /><span className="geo-bar bar-a" /><span className="geo-bar bar-b" />
-        <b>尘</b><small>万物皆微尘，自在。</small>
+        <b>尘</b><small>积尘为壤，静默生长</small>
       </div>
       <div className="intro-scene scene-end" aria-hidden="true">
         <video
